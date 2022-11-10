@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import UploadedState from "./uploadedState";
+import { uploadBlob } from "./../firebase";
 
 const UploadState = () => {
   const [uploadImage, setUploadImage] = useState("");
@@ -7,6 +7,11 @@ const UploadState = () => {
 
   const handleUploadBtnClick = () => {
     uploadRef.current.click();
+  };
+
+  const handleUpload = () => {
+    const imageBlob = uploadRef.current.files[0];
+    if (imageBlob) uploadBlob(imageBlob);
   };
 
   return (
@@ -24,7 +29,7 @@ const UploadState = () => {
 
       <span>or</span>
 
-      <input type="file" ref={uploadRef} hidden />
+      <input type="file" ref={uploadRef} onChange={handleUpload} hidden />
       <button onClick={handleUploadBtnClick}>Choose a file</button>
     </div>
   );

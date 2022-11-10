@@ -1,5 +1,7 @@
+import UploadState from "./components/uploadState";
+
 function App() {
-  return <h1>Now we're live</h1>;
+  return <UploadState />;
 }
 
 export default App;
