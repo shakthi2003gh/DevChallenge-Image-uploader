@@ -1,17 +1,34 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { uploadBlob } from "./../firebase";
 
-const UploadState = () => {
-  const [uploadImage, setUploadImage] = useState("");
+const UploadState = ({ setFileName, setLoading, setUploadedStage }) => {
   const uploadRef = useRef();
 
-  const handleUploadBtnClick = () => {
-    uploadRef.current.click();
-  };
+  const handleUploadBtnClick = () => uploadRef.current.click();
 
   const handleUpload = () => {
     const imageBlob = uploadRef.current.files[0];
-    if (imageBlob) uploadBlob(imageBlob);
+    if (!imageBlob) return;
+
+    setLoading(true);
+
+    async function postImage() {
+      try {
+        const fileName = await uploadBlob(imageBlob);
+
+        setLoading(false);
+        setUploadedStage(true);
+
+        setFileName(fileName);
+      } catch (error) {
+        console.log(error);
+
+        setLoading(false);
+        setUploadedStage(false);
+      }
+    }
+
+    postImage();
   };
 
   return (
@@ -21,8 +38,6 @@ const UploadState = () => {
 
       <div className="upload-section">
         <img src="./image.svg" alt="" />
-
-        {uploadImage && <img className="upload-img" src={uploadImage} alt="" />}
 
         <p>Drag & Drop your image here</p>
       </div>
