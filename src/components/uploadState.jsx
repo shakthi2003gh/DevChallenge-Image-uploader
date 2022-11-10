@@ -6,8 +6,17 @@ const UploadState = ({ setFileName, setLoading, setUploadedStage }) => {
 
   const handleUploadBtnClick = () => uploadRef.current.click();
 
-  const handleUpload = () => {
-    const imageBlob = uploadRef.current.files[0];
+  const handleDrag = (e) => e.preventDefault();
+
+  const handleFileSelect = () => handleUpload(uploadRef.current.files[0]);
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+
+    handleUpload(e.dataTransfer.files[0]);
+  };
+
+  const handleUpload = (imageBlob) => {
     if (!imageBlob) return;
 
     setLoading(true);
@@ -36,7 +45,11 @@ const UploadState = ({ setFileName, setLoading, setUploadedStage }) => {
       <h1>Upload your image</h1>
       <p>File should be Jpeg, Png,...</p>
 
-      <div className="upload-section">
+      <div
+        className="upload-section"
+        onDrop={handleDrop}
+        onDragOver={handleDrag}
+      >
         <img src="./image.svg" alt="" />
 
         <p>Drag & Drop your image here</p>
@@ -44,7 +57,7 @@ const UploadState = ({ setFileName, setLoading, setUploadedStage }) => {
 
       <span>or</span>
 
-      <input type="file" ref={uploadRef} onChange={handleUpload} hidden />
+      <input type="file" ref={uploadRef} onChange={handleFileSelect} hidden />
       <button onClick={handleUploadBtnClick}>Choose a file</button>
     </div>
   );
