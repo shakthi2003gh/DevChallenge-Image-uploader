@@ -148,12 +148,8 @@ export async function uploadBlob(blob) {
   const fileName = now + "/" + blob.name;
   const fileExtention = blob.name.split(".").pop();
 
-<<<<<<< HEAD
   if (!imageExtentions.includes(fileExtention))
     throw new { message: "invalid file", status: 404 }();
-=======
-  if (!imageExtentions.includes(fileExtention)) throw "invalid file";
->>>>>>> refs/remotes/origin/master
 
   const storageRef = ref(storage, fileName);
 
